@@ -115,7 +115,6 @@ ngOnInit() {
    ```typescript
    @required({
      conditionalExpression: (c) => c.parent?.get('type')?.value === 'business',
-     conditionalExpressionFields: ['type'],
    })
    companyName = '';
    ```

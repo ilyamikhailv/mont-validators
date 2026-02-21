@@ -8,7 +8,7 @@ import type { BaseConfig } from '../models/config/base-config';
 /**
  * Validates that the control value matches email format.
  *
- * @param config - Optional config with message, conditionalExpression, conditionalExpressionFields
+ * @param config - Optional config with message, conditionalExpression
  * @returns ValidatorFn that returns error when value is not a valid email
  *
  * @example

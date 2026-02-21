@@ -52,20 +52,8 @@ function addAnnotation(instanceFunc: Constructor, decoratorConfig: DecoratorConf
       ? (decoratorConfig.config as Record<string, unknown>)
       : undefined;
   const fieldName = config && typeof config['fieldName'] === 'string' ? config['fieldName'] : undefined;
-  const rawFields = config?.['conditionalExpressionFields'];
-  const conditionalFields =
-    Array.isArray(rawFields)
-      ? rawFields.filter((x): x is string => typeof x === 'string')
-      : undefined;
   if (fieldName) {
     setConditionalValueProp(instance, fieldName, decoratorConfig.propertyName);
-  }
-  if (conditionalFields?.length) {
-    addChangeValidation(
-      instance,
-      decoratorConfig.propertyName,
-      conditionalFields.map((p) => ({ propName: p }))
-    );
   }
 }
 
@@ -82,24 +70,6 @@ function setConditionalValueProp(
   }
   if (instance.conditionalValidationProps[propName].indexOf(refPropName) === -1) {
     instance.conditionalValidationProps[propName].push(refPropName);
-  }
-}
-
-function addChangeValidation(
-  instance: InstanceContainer,
-  propertyName: string,
-  columns: Array<{ propName: string }>
-): void {
-  for (const col of columns) {
-    if (!instance.conditionalValidationProps) {
-      instance.conditionalValidationProps = {};
-    }
-    if (!instance.conditionalValidationProps[col.propName]) {
-      instance.conditionalValidationProps[col.propName] = [];
-    }
-    if (instance.conditionalValidationProps[col.propName].indexOf(propertyName) === -1) {
-      instance.conditionalValidationProps[col.propName].push(propertyName);
-    }
   }
 }
 
@@ -135,7 +105,6 @@ export const defaultContainer = {
   addAnnotation,
   addProperty,
   addInstanceContainer,
-  addChangeValidation,
   init(
     target: object,
     _parameterIndex: number,

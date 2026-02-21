@@ -97,10 +97,9 @@ this.control = new FormControl('', [MontValidators.email()]);
 @required({ conditionalExpression: 'x => x.type === 1' })
 field = '';
 
-// Стало (функция + поля для отслеживания)
+// Стало (функция)
 @required({
   conditionalExpression: (c) => c.parent?.get('type')?.value === 1,
-  conditionalExpressionFields: ['type'],
 })
 field = '';
 ```

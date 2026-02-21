@@ -8,8 +8,4 @@ export type BaseConfig = {
   message?: string;
   /** When false, validator is skipped */
   conditionalExpression?: (control: AbstractControl) => boolean;
-  /** Field names to watch for revalidation when conditionalExpression is used */
-  conditionalExpressionFields?: string[];
-  /** Key for i18n message lookup */
-  messageKey?: string;
 };
