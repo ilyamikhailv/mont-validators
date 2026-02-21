@@ -70,7 +70,7 @@ describe('MontFormBuilder', () => {
     const form = formBuilder.group(user);
 
     expect(form.get('email')?.errors?.['required']).toBeDefined();
-    expect(form.get('password')?.errors?.['minlength']).toBeDefined();
+    expect(form.get('password')?.errors?.['minLength']).toBeDefined();
   });
 
   it('should create valid form when values satisfy validators', () => {

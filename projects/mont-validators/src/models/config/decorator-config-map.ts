@@ -19,8 +19,8 @@ export type PatternConfig = BaseConfig & {
 };
 
 export type DecoratorConfigMap = {
-  required: undefined;
-  requiredTrue: undefined;
+  required: BaseConfig | undefined;
+  requiredTrue: BaseConfig | undefined;
   minLength: MinLengthConfig;
   maxLength: MaxLengthConfig;
   pattern: PatternConfig;

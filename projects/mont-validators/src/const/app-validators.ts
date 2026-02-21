@@ -1,5 +1,9 @@
 import type { ValidatorFn } from '@angular/forms';
-import { Validators } from '@angular/forms';
+import { requiredValidator } from '../validators/required.validator';
+import { requiredTrueValidator } from '../validators/required-true.validator';
+import { minLengthValidator } from '../validators/min-length.validator';
+import { maxLengthValidator } from '../validators/max-length.validator';
+import { patternValidator } from '../validators/pattern.validator';
 import { minNumberValidator } from '../validators/min-number.validator';
 import { maxNumberValidator } from '../validators/max-number.validator';
 import { greaterThanValidator } from '../validators/greater-than.validator';
@@ -21,14 +25,11 @@ type ValidatorFactoryMap = {
 };
 
 export const APP_VALIDATORS: ValidatorFactoryMap = {
-  [AnnotationTypes.required]: () => Validators.required,
-  [AnnotationTypes.requiredTrue]: () => Validators.requiredTrue,
-  [AnnotationTypes.minLength]: (c) =>
-    Validators.minLength(c?.value ?? 0),
-  [AnnotationTypes.maxLength]: (c) =>
-    Validators.maxLength(c?.value ?? 0),
-  [AnnotationTypes.pattern]: (c) =>
-    Validators.pattern(c?.pattern ?? ''),
+  [AnnotationTypes.required]: (c) => requiredValidator(c),
+  [AnnotationTypes.requiredTrue]: (c) => requiredTrueValidator(c),
+  [AnnotationTypes.minLength]: (c) => minLengthValidator(c ?? { value: 0 }),
+  [AnnotationTypes.maxLength]: (c) => maxLengthValidator(c ?? { value: 0 }),
+  [AnnotationTypes.pattern]: (c) => patternValidator(c ?? { pattern: '' }),
   [AnnotationTypes.minNumber]: (c) => minNumberValidator(c ?? 0),
   [AnnotationTypes.maxNumber]: (c) => maxNumberValidator(c ?? 0),
   [AnnotationTypes.greaterThan]: (c) =>

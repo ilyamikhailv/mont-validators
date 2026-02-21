@@ -4,19 +4,19 @@ import { wrapAngularValidator } from '../util/angular-validator-wrapper';
 import { AnnotationTypes } from '../const/annotation-types';
 import type { BaseConfig } from '../models/config/base-config';
 
-const emailValidatorFactory = wrapAngularValidator(
-  Validators.email,
-  AnnotationTypes.email,
+const requiredTrueValidatorFactory = wrapAngularValidator(
+  Validators.requiredTrue,
+  AnnotationTypes.requiredTrue,
   (control) => [control.value],
-  { useShouldValidate: true }
+  { useShouldValidate: false }
 );
 
 /**
- * Validates that the control value matches email format (Angular Validators.email).
+ * Validates that the control value is exactly true (e.g. for checkboxes).
  *
  * @param config - Optional config with message, conditionalExpression
- * @returns ValidatorFn that returns error when value is not a valid email
+ * @returns ValidatorFn that returns error when value is not true
  */
-export function emailValidator(config?: BaseConfig): ValidatorFn {
-  return emailValidatorFactory(config);
+export function requiredTrueValidator(config?: BaseConfig): ValidatorFn {
+  return requiredTrueValidatorFactory(config);
 }

@@ -1,6 +1,10 @@
-import { Validators } from '@angular/forms';
 import { minNumberValidator } from './validators/min-number.validator';
 import { maxNumberValidator } from './validators/max-number.validator';
+import { requiredValidator } from './validators/required.validator';
+import { requiredTrueValidator } from './validators/required-true.validator';
+import { minLengthValidator } from './validators/min-length.validator';
+import { maxLengthValidator } from './validators/max-length.validator';
+import { patternValidator } from './validators/pattern.validator';
 import { greaterThanValidator } from './validators/greater-than.validator';
 import { lessThanEqualToValidator } from './validators/less-than-equal-to.validator';
 import { urlValidator } from './validators/url.validator';
@@ -15,6 +19,11 @@ import type { ChoiceConfig } from './models/config/choice-config';
 import type { ArrayConfig } from './models/config/array-config';
 import type { PasswordConfig } from './models/config/password-config';
 import type { BaseConfig } from './models/config/base-config';
+import type {
+  MinLengthConfig,
+  MaxLengthConfig,
+  PatternConfig,
+} from './models/config/decorator-config-map';
 
 /**
  * Imperative API for Angular Reactive Forms validators.
@@ -30,15 +39,16 @@ import type { BaseConfig } from './models/config/base-config';
  */
 export const MontValidators = {
   /** Requires non-empty value */
-  required: () => Validators.required,
+  required: (config?: BaseConfig) => requiredValidator(config),
   /** Requires value to be exactly true */
-  requiredTrue: () => Validators.requiredTrue,
+  requiredTrue: (config?: BaseConfig) => requiredTrueValidator(config),
   /** Minimum string length */
-  minLength: (min: number) => Validators.minLength(min),
+  minLength: (config: MinLengthConfig | number) => minLengthValidator(config),
   /** Maximum string length */
-  maxLength: (max: number) => Validators.maxLength(max),
+  maxLength: (config: MaxLengthConfig | number) => maxLengthValidator(config),
   /** Regex pattern match */
-  pattern: (pattern: string | RegExp) => Validators.pattern(pattern),
+  pattern: (config: PatternConfig | string | RegExp) =>
+    patternValidator(config),
   /** Email format validation */
   email: (config?: BaseConfig) => emailValidator(config),
   /** Minimum numeric value */

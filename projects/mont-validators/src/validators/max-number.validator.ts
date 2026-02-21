@@ -1,35 +1,30 @@
-import type { AbstractControl, ValidatorFn } from '@angular/forms';
-import { shouldValidate } from '../util/form-provider';
-import { toValidationError, nullError } from '../util/object-maker';
+import type { ValidatorFn } from '@angular/forms';
+import { Validators } from '@angular/forms';
+import {
+  wrapParametricValidator,
+  getMaxRefValues,
+} from '../util/angular-validator-wrapper';
 import { getNumberConfig } from '../util/config-provider';
 import { AnnotationTypes } from '../const/annotation-types';
 import type { NumberConfig } from '../models/config/number-config';
+
+const maxNumberValidatorFactory = wrapParametricValidator<
+  number,
+  NumberConfig | number
+>(
+  Validators.max,
+  AnnotationTypes.maxNumber,
+  getMaxRefValues,
+  (config) => getNumberConfig(config).value,
+  { useShouldValidate: true }
+);
 
 /**
  * Validates that the control value is a number <= maximum.
  *
  * @param config - NumberConfig with value (max) and optional message, or number for max value
  * @returns ValidatorFn that returns error when value exceeds maximum
- *
- * @example
- * ```ts
- * maxNumberValidator(100)
- * maxNumberValidator({ value: 100, message: 'Value must be at most {{0}}' })
- * ```
  */
 export function maxNumberValidator(config: NumberConfig | number): ValidatorFn {
-  return (control: AbstractControl) => {
-    const cfg = getNumberConfig(config);
-    if (shouldValidate(control, cfg)) {
-      const num = parseFloat(String(control.value));
-      if (isNaN(num) || num > cfg.value) {
-        return toValidationError(
-          AnnotationTypes.maxNumber,
-          { message: cfg.message },
-          [control.value, cfg.value]
-        );
-      }
-    }
-    return nullError();
-  };
+  return maxNumberValidatorFactory(config);
 }
