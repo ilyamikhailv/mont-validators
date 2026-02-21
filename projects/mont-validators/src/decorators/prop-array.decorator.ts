@@ -1,12 +1,12 @@
 import { defaultContainer } from '../core/default-container';
 import type { PropertyInfo } from '../core/validator.interface';
 import { ARRAY_PROPERTY } from '../const/property-types';
-import type { PropArrayConfig } from '../models/config/prop-config';
+import type { PropNestedConfig } from '../models/config/prop-config';
 import { getConstructor } from '../util/type-guards';
 
 export function propArray(
   entity?: new (...args: unknown[]) => unknown,
-  config?: PropArrayConfig
+  config?: PropNestedConfig
 ) {
   return (target: object, propertyKey: string, _parameterIndex?: number) => {
     const propertyInfo: PropertyInfo = {

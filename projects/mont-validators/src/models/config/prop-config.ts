@@ -5,10 +5,15 @@ export type PropConfig = {
   isPrimaryKey?: boolean;
 };
 
-export type PropObjectConfig = PropConfig & {
+/**
+ * Config for propObject and propArray decorators (nested objects/arrays).
+ */
+export type PropNestedConfig = PropConfig & {
   entityProvider?: () => unknown;
 };
 
-export type PropArrayConfig = PropConfig & {
-  entityProvider?: () => unknown;
-};
+/** @deprecated Use PropNestedConfig instead */
+export type PropObjectConfig = PropNestedConfig;
+
+/** @deprecated Use PropNestedConfig instead */
+export type PropArrayConfig = PropNestedConfig;

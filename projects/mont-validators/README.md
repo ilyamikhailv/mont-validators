@@ -155,7 +155,7 @@ MontValidators.choice({
 });
 ```
 
-### CompareConfig / FieldConfig
+### FieldConfig
 
 ```typescript
 MontValidators.compare({ fieldName: 'password' });

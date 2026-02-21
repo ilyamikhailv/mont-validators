@@ -11,7 +11,6 @@ import { choiceValidator } from './validators/choice.validator';
 import { oneOfValidator } from './validators/one-of.validator';
 import type { NumberConfig } from './models/config/number-config';
 import type { FieldConfig } from './models/config/field-config';
-import type { CompareConfig } from './models/config/compare-config';
 import type { ChoiceConfig } from './models/config/choice-config';
 import type { ArrayConfig } from './models/config/array-config';
 import type { PasswordConfig } from './models/config/password-config';
@@ -55,7 +54,7 @@ export const MontValidators = {
   /** Password strength validation (digit, upperCase, etc.) */
   password: (config?: PasswordConfig) => passwordValidator(config),
   /** Value must match another field */
-  compare: (config: CompareConfig) => compareValidator(config),
+  compare: (config: FieldConfig) => compareValidator(config),
   /** Array length between minLength and maxLength */
   choice: (config?: ChoiceConfig) => choiceValidator(config),
   /** Value must be one of allowed values */

@@ -1,7 +1,7 @@
 import { baseDecoratorFunction } from './base-decorator.function';
 import { AnnotationTypes } from '../const/annotation-types';
-import type { CompareConfig } from '../models/config/compare-config';
+import type { FieldConfig } from '../models/config/field-config';
 
-export function compare(config: CompareConfig) {
+export function compare(config: FieldConfig) {
   return baseDecoratorFunction(AnnotationTypes.compare, config);
 }

@@ -2,7 +2,6 @@ import type { AnnotationType } from '../../const/annotation-types';
 import type { BaseConfig } from './base-config';
 import type { NumberConfig } from './number-config';
 import type { FieldConfig } from './field-config';
-import type { CompareConfig } from './compare-config';
 import type { ChoiceConfig } from './choice-config';
 import type { ArrayConfig } from './array-config';
 import type { PasswordConfig } from './password-config';
@@ -29,7 +28,7 @@ export type DecoratorConfigMap = {
   maxNumber: NumberConfig | number;
   greaterThan: FieldConfig;
   lessThanEqualTo: FieldConfig;
-  compare: CompareConfig;
+  compare: FieldConfig;
   email: BaseConfig;
   url: BaseConfig;
   password: PasswordConfig;

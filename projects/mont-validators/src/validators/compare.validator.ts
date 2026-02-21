@@ -3,7 +3,7 @@ import { RegexValidator } from '../util/regex-validator';
 import { toValidationError, nullError } from '../util/object-maker';
 import { getFormControl } from '../util/app-util';
 import { AnnotationTypes } from '../const/annotation-types';
-import type { CompareConfig } from '../models/config/compare-config';
+import type { FieldConfig } from '../models/config/field-config';
 
 /**
  * Validates that the control value matches another field's value (e.g. confirm password).
@@ -17,7 +17,7 @@ import type { CompareConfig } from '../models/config/compare-config';
  * compareValidator({ fieldName: 'password', message: 'Passwords do not match' })
  * ```
  */
-export function compareValidator(config: CompareConfig): ValidatorFn {
+export function compareValidator(config: FieldConfig): ValidatorFn {
   return (control: AbstractControl) => {
     const cfg = config ?? {};
     const compareControl = cfg.fieldName
