@@ -18,7 +18,7 @@ export function lessThanEqualToValidator(config: FieldConfig): ValidatorFn {
       if (!isNaN(num) && !isNaN(matchNum) && num > matchNum) {
         return toValidationError(
           AnnotationTypes.lessThanEqualTo,
-          { message: cfg.message ?? `Value must be less than or equal to {{0}}` },
+          { message: cfg.message },
           [control.value, matchValue]
         );
       }

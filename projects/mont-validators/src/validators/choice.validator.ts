@@ -16,10 +16,7 @@ export function choiceValidator(config?: ChoiceConfig): ValidatorFn {
       if (arr.length < minLen || (maxLen !== 0 && arr.length > maxLen)) {
         return toValidationError(
           AnnotationTypes.choice,
-          {
-            message:
-              cfg.message ?? `Array length must be between {{0}} and {{1}}`,
-          },
+          { message: cfg.message },
           [minLen, maxLen]
         );
       }

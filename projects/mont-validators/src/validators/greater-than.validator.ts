@@ -18,7 +18,7 @@ export function greaterThanValidator(config: FieldConfig): ValidatorFn {
       if (!isNaN(num) && !isNaN(matchNum) && num <= matchNum) {
         return toValidationError(
           AnnotationTypes.greaterThan,
-          { message: cfg.message ?? `Value must be greater than {{0}}` },
+          { message: cfg.message },
           [control.value, matchValue]
         );
       }

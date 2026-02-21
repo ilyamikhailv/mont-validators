@@ -30,7 +30,7 @@ export function oneOfValidator(config: ArrayConfig): ValidatorFn {
       if (!found) {
         return toValidationError(
           AnnotationTypes.oneOf,
-          { message: cfg.message ?? `Value must be one of the allowed values` },
+          { message: cfg.message },
           [control.value]
         );
       }

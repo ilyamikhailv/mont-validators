@@ -12,7 +12,7 @@ export function urlValidator(config?: BaseConfig): ValidatorFn {
       if (!REGEX_RULES['url'].test(String(control.value))) {
         return toValidationError(
           AnnotationTypes.url,
-          { message: cfg.message ?? `Invalid URL` },
+          { message: cfg.message },
           [control.value]
         );
       }

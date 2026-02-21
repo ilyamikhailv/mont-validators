@@ -13,7 +13,7 @@ export function maxNumberValidator(config: NumberConfig | number): ValidatorFn {
       if (isNaN(num) || num > cfg.value) {
         return toValidationError(
           AnnotationTypes.maxNumber,
-          { message: cfg.message ?? `Maximum value is {{0}}` },
+          { message: cfg.message },
           [control.value, cfg.value]
         );
       }

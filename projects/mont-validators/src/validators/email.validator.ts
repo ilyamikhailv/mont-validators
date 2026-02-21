@@ -12,7 +12,7 @@ export function emailValidator(config?: BaseConfig): ValidatorFn {
       if (!REGEX_RULES['basicEmail'].test(String(control.value))) {
         return toValidationError(
           AnnotationTypes.email,
-          { message: cfg.message ?? `Invalid email` },
+          { message: cfg.message },
           [control.value]
         );
       }

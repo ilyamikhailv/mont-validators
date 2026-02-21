@@ -21,7 +21,7 @@ export function compareValidator(config: CompareConfig): ValidatorFn {
       if (!(compareControl && compareControl.value === controlValue)) {
         return toValidationError(
           AnnotationTypes.compare,
-          { message: cfg.message ?? `Fields do not match` },
+          { message: cfg.message },
           [controlValue, compareValue]
         );
       }

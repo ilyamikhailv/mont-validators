@@ -13,7 +13,7 @@ export function minNumberValidator(config: NumberConfig | number): ValidatorFn {
       if (isNaN(num) || num < cfg.value) {
         return toValidationError(
           AnnotationTypes.minNumber,
-          { message: cfg.message ?? `Minimum value is {{0}}` },
+          { message: cfg.message },
           [control.value, cfg.value]
         );
       }

@@ -16,7 +16,7 @@ export function passwordValidator(config?: PasswordConfig): ValidatorFn {
       if (!validation.isValid) {
         return toValidationError(
           AnnotationTypes.password,
-          { message: cfg.message ?? `Password validation failed` },
+          { message: cfg.message },
           [control.value]
         );
       }
