@@ -6,6 +6,19 @@ import { lowerCaseWithTrim } from '../util/app-util';
 import { AnnotationTypes } from '../const/annotation-types';
 import type { ArrayConfig } from '../models/config/array-config';
 
+/**
+ * Validates that the control value (or any element if array) is one of the allowed values.
+ * Comparison is case-insensitive.
+ *
+ * @param config - Config with matchValues (allowed values) and optional message
+ * @returns ValidatorFn that returns error when value is not in matchValues
+ *
+ * @example
+ * ```ts
+ * oneOfValidator({ matchValues: ['yes', 'no'] })
+ * oneOfValidator({ matchValues: ['admin', 'user'], message: 'Invalid role' })
+ * ```
+ */
 export function oneOfValidator(config: ArrayConfig): ValidatorFn {
   return (control: AbstractControl) => {
     const cfg = config ?? {};

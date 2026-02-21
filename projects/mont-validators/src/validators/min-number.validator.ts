@@ -5,6 +5,18 @@ import { getNumberConfig } from '../util/config-provider';
 import { AnnotationTypes } from '../const/annotation-types';
 import type { NumberConfig } from '../models/config/number-config';
 
+/**
+ * Validates that the control value is a number >= minimum.
+ *
+ * @param config - NumberConfig with value (min) and optional message, or number for min value
+ * @returns ValidatorFn that returns error when value is less than minimum
+ *
+ * @example
+ * ```ts
+ * minNumberValidator(0)
+ * minNumberValidator({ value: 18, message: 'Age must be at least {{0}}' })
+ * ```
+ */
 export function minNumberValidator(config: NumberConfig | number): ValidatorFn {
   return (control: AbstractControl) => {
     const cfg = getNumberConfig(config);

@@ -5,6 +5,18 @@ import { REGEX_RULES } from '../util/regex-rules';
 import { AnnotationTypes } from '../const/annotation-types';
 import type { BaseConfig } from '../models/config/base-config';
 
+/**
+ * Validates that the control value matches URL format.
+ *
+ * @param config - Optional config with message, conditionalExpression, conditionalExpressionFields
+ * @returns ValidatorFn that returns error when value is not a valid URL
+ *
+ * @example
+ * ```ts
+ * const control = new FormControl('', [urlValidator()]);
+ * const controlWithMessage = new FormControl('', [urlValidator({ message: 'Invalid URL' })]);
+ * ```
+ */
 export function urlValidator(config?: BaseConfig): ValidatorFn {
   return (control: AbstractControl) => {
     const cfg = config ?? {};

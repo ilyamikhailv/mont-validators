@@ -4,6 +4,19 @@ import { toValidationError, nullError } from '../util/object-maker';
 import { AnnotationTypes } from '../const/annotation-types';
 import type { ChoiceConfig } from '../models/config/choice-config';
 
+/**
+ * Validates array length is between minLength and maxLength.
+ * Use for multi-select or checkbox groups.
+ *
+ * @param config - Optional config with minLength, maxLength (0 = no max), message
+ * @returns ValidatorFn that returns error when array length is out of range
+ *
+ * @example
+ * ```ts
+ * choiceValidator({ minLength: 1, maxLength: 5 })
+ * choiceValidator({ minLength: 2, message: 'Select at least 2 items' })
+ * ```
+ */
 export function choiceValidator(config?: ChoiceConfig): ValidatorFn {
   return (control: AbstractControl) => {
     const cfg = config ?? {};

@@ -5,6 +5,18 @@ import { getFormControl } from '../util/app-util';
 import { AnnotationTypes } from '../const/annotation-types';
 import type { FieldConfig } from '../models/config/field-config';
 
+/**
+ * Validates that the control value is less than or equal to another field or fixed value.
+ *
+ * @param config - Config with fieldName (sibling control) or value (fixed number/string), optional message
+ * @returns ValidatorFn that returns error when value exceeds reference
+ *
+ * @example
+ * ```ts
+ * lessThanEqualToValidator({ fieldName: 'max' })
+ * lessThanEqualToValidator({ value: 100, message: 'Must be at most {{0}}' })
+ * ```
+ */
 export function lessThanEqualToValidator(config: FieldConfig): ValidatorFn {
   return (control: AbstractControl) => {
     const cfg = config ?? {};

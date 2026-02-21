@@ -5,6 +5,18 @@ import { getNumberConfig } from '../util/config-provider';
 import { AnnotationTypes } from '../const/annotation-types';
 import type { NumberConfig } from '../models/config/number-config';
 
+/**
+ * Validates that the control value is a number <= maximum.
+ *
+ * @param config - NumberConfig with value (max) and optional message, or number for max value
+ * @returns ValidatorFn that returns error when value exceeds maximum
+ *
+ * @example
+ * ```ts
+ * maxNumberValidator(100)
+ * maxNumberValidator({ value: 100, message: 'Value must be at most {{0}}' })
+ * ```
+ */
 export function maxNumberValidator(config: NumberConfig | number): ValidatorFn {
   return (control: AbstractControl) => {
     const cfg = getNumberConfig(config);

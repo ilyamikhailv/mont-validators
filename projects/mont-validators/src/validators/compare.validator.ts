@@ -5,6 +5,18 @@ import { getFormControl } from '../util/app-util';
 import { AnnotationTypes } from '../const/annotation-types';
 import type { CompareConfig } from '../models/config/compare-config';
 
+/**
+ * Validates that the control value matches another field's value (e.g. confirm password).
+ *
+ * @param config - Config with fieldName (sibling control to compare with) and optional message
+ * @returns ValidatorFn that returns error when values do not match
+ *
+ * @example
+ * ```ts
+ * compareValidator({ fieldName: 'password' })
+ * compareValidator({ fieldName: 'password', message: 'Passwords do not match' })
+ * ```
+ */
 export function compareValidator(config: CompareConfig): ValidatorFn {
   return (control: AbstractControl) => {
     const cfg = config ?? {};
