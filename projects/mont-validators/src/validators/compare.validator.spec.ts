@@ -11,6 +11,15 @@ describe('compareValidator', () => {
     expect(validator(group.get('confirm')!)).toBeNull();
   });
 
+  it('should return null when both values are empty', () => {
+    const group = new FormGroup({
+      password: new FormControl(''),
+      confirm: new FormControl(''),
+    });
+    const validator = compareValidator({ fieldName: 'password' });
+    expect(validator(group.get('confirm')!)).toBeNull();
+  });
+
   it('should return error when values do not match', () => {
     const group = new FormGroup({
       password: new FormControl('secret123'),

@@ -16,9 +16,16 @@ export default defineConfig({
       reportsDirectory: '../../coverage/mont-validators',
       reporter: ['text', 'html', 'lcov'],
       include: ['src/**/*.ts'],
+      thresholds: {
+        statements: 70,
+        branches: 60,
+        functions: 70,
+        lines: 70,
+      },
       exclude: [
         'src/**/*.spec.ts',
         'src/test-setup.ts',
+        'src/test-utils.ts',
         'src/**/index.ts',
         'src/public-api.ts',
       ],

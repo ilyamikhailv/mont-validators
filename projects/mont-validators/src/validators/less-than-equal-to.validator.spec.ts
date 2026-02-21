@@ -48,6 +48,22 @@ describe('lessThanEqualToValidator', () => {
     expect(lessThanEqualToValidator({ value: 10 })(control)).toBeNull();
   });
 
+  it('should return null when conditionalExpression returns false', () => {
+    const form = new FormGroup({
+      min: new FormControl(15),
+      max: new FormControl(10),
+    });
+    const control = form.get('min')!;
+    control.setValidators([
+      lessThanEqualToValidator({
+        fieldName: 'max',
+        conditionalExpression: () => false,
+      }),
+    ]);
+    control.updateValueAndValidity();
+    expect(control.errors).toBeNull();
+  });
+
   it('should use custom message when provided', () => {
     const control = new FormControl(15);
     const result = lessThanEqualToValidator({

@@ -33,6 +33,15 @@ describe('choiceValidator', () => {
     expect(choiceValidator({ minLength: 1 })(control)).toBeNull();
   });
 
+  it('should return null when conditionalExpression returns false', () => {
+    const control = new FormControl([1]);
+    const result = choiceValidator({
+      minLength: 2,
+      conditionalExpression: () => false,
+    })(control);
+    expect(result).toBeNull();
+  });
+
   it('should use custom message when provided', () => {
     const control = new FormControl([]);
     const result = choiceValidator({

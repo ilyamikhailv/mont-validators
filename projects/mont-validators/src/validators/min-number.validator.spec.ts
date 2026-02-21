@@ -20,6 +20,15 @@ describe('minNumberValidator', () => {
     expect(result).not.toBeNull();
   });
 
+  it('should return null when conditionalExpression returns false', () => {
+    const control = new FormControl(3);
+    const result = minNumberValidator({
+      value: 5,
+      conditionalExpression: () => false,
+    })(control);
+    expect(result).toBeNull();
+  });
+
   it('should return null when control is empty', () => {
     const control = new FormControl('');
     expect(minNumberValidator(5)(control)).toBeNull();

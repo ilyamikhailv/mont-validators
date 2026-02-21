@@ -38,6 +38,15 @@ describe('passwordValidator', () => {
     expect(passwordValidator({ validation: { digit: true } })(control)).toBeNull();
   });
 
+  it('should return null when conditionalExpression returns false', () => {
+    const control = new FormControl('abc');
+    const result = passwordValidator({
+      validation: { digit: true },
+      conditionalExpression: () => false,
+    })(control);
+    expect(result).toBeNull();
+  });
+
   it('should use custom message when provided', () => {
     const control = new FormControl('abc');
     const result = passwordValidator({

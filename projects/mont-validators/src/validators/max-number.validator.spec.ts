@@ -14,6 +14,15 @@ describe('maxNumberValidator', () => {
     expect(result!['maxNumber']).toBeDefined();
   });
 
+  it('should return null when conditionalExpression returns false', () => {
+    const control = new FormControl(150);
+    const result = maxNumberValidator({
+      value: 100,
+      conditionalExpression: () => false,
+    })(control);
+    expect(result).toBeNull();
+  });
+
   it('should accept config object', () => {
     const control = new FormControl(15);
     const result = maxNumberValidator({ value: 10 })(control);

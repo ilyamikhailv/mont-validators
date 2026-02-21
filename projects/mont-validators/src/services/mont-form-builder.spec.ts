@@ -1,8 +1,10 @@
 import { TestBed } from '@angular/core/testing';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormArray, FormControl, FormGroup } from '@angular/forms';
 import { defaultContainer } from '../core/default-container';
 import { MontFormBuilder } from './mont-form-builder';
 import { prop } from '../decorators/prop.decorator';
+import { propObject } from '../decorators/prop-object.decorator';
+import { propArray } from '../decorators/prop-array.decorator';
 import { required } from '../decorators/required.decorator';
 import { email } from '../decorators/email.decorator';
 import { minLength } from '../decorators/min-length.decorator';
@@ -175,5 +177,87 @@ describe('MontFormBuilder', () => {
 
     expect(form).toBeInstanceOf(FormGroup);
     expect(form.get('email')?.value).toBe('test@example.com');
+  });
+
+  it('should support propObject with nested FormGroup', () => {
+    class AddressForm {
+      @prop()
+      city = '';
+
+      @prop()
+      street = '';
+    }
+
+    class UserForm {
+      @prop()
+      name = '';
+
+      @propObject(AddressForm)
+      address: { city: string; street: string } = { city: 'Moscow', street: 'Red' };
+    }
+
+    const user = new UserForm();
+    const form = formBuilder.group(user);
+
+    expect(form.get('address')).toBeInstanceOf(FormGroup);
+    expect(form.get('address.city')?.value).toBe('Moscow');
+    expect(form.get('address.street')?.value).toBe('Red');
+  });
+
+  it('should support propArray with FormArray of nested FormGroups', () => {
+    class ItemForm {
+      @prop()
+      name = '';
+    }
+
+    class OrderForm {
+      @prop()
+      orderId = '';
+
+      @propArray(ItemForm)
+      items: ItemForm[] = [];
+    }
+
+    const order = new OrderForm();
+    const item1 = new ItemForm();
+    item1.name = 'item1';
+    const item2 = new ItemForm();
+    item2.name = 'item2';
+    order.items = [item1, item2];
+
+    const form = formBuilder.group(order);
+
+    expect(form.get('items')).toBeInstanceOf(FormArray);
+    expect((form.get('items') as FormArray).length).toBe(2);
+    expect((form.get('items') as FormArray).at(0).get('name')?.value).toBe('item1');
+  });
+
+  it('should use defaultValue when property is empty', () => {
+    class FormWithDefault {
+      @prop({ defaultValue: 'default' })
+      field = '';
+    }
+
+    const model = new FormWithDefault();
+    const form = formBuilder.group(model);
+
+    expect(form.get('field')?.value).toBe('default');
+  });
+
+  it('should respect ignore when property.ignore returns true', () => {
+    class FormWithIgnore {
+      @prop()
+      visible = 'yes';
+
+      @prop({ ignore: (obj: { skip?: boolean }) => obj.skip === true })
+      hidden = 'no';
+    }
+
+    const model = new FormWithIgnore();
+    (model as { skip?: boolean }).skip = true;
+    const form = formBuilder.group(model);
+
+    expect(form.get('visible')).toBeDefined();
+    expect(form.get('hidden')).toBeNull();
   });
 });
