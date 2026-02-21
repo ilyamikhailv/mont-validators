@@ -1,6 +1,16 @@
 {
   "name": "@mont/validators",
   "version": "0.0.1",
+  "description": "Angular validators and decorators for Reactive Forms",
+  "keywords": [
+    "angular",
+    "validators",
+    "forms",
+    "reactive-forms",
+    "decorators",
+    "form-validation"
+  ],
+  "license": "MIT",
   "peerDependencies": {
     "@angular/common": "^19.2.0",
     "@angular/core": "^19.2.0",
@@ -9,5 +19,13 @@
   "dependencies": {
     "tslib": "^2.3.0"
   },
-  "sideEffects": false
+  "sideEffects": false,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mont/mont-validators.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mont/mont-validators/issues"
+  },
+  "homepage": "https://github.com/mont/mont-validators#readme"
 }
