@@ -26,7 +26,7 @@ export class RegexValidator {
     return regex.test(String(value ?? ''));
   }
 
-  static isExits(value: unknown, regex: RegExp): boolean {
+  static isExists(value: unknown, regex: RegExp): boolean {
     return String(value ?? '').match(regex) != null;
   }
 
@@ -48,7 +48,7 @@ export class RegexValidator {
 
       switch (propertyName) {
         case 'alphabet':
-          isValid = RegexValidator.isExits(value, REGEX_RULES['alphaExists']);
+          isValid = RegexValidator.isExists(value, REGEX_RULES['alphaExists']);
           keyName = 'alphabet';
           break;
         case 'digit':
@@ -68,7 +68,7 @@ export class RegexValidator {
           keyName = 'upperCase';
           break;
         case 'specialCharacter':
-          isValid = RegexValidator.isExits(value, REGEX_RULES['specialCharacter']);
+          isValid = RegexValidator.isExists(value, REGEX_RULES['specialCharacter']);
           keyName = 'specialCharacter';
           break;
         case 'minLength':

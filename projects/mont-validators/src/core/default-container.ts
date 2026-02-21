@@ -9,6 +9,10 @@ function getInstance(instanceFunc: Constructor): InstanceContainer | undefined {
   return instances.find((inst) => inst.instance === instanceFunc);
 }
 
+function clear(): void {
+  instances.length = 0;
+}
+
 function addInstanceContainer(instanceFunc: Constructor): InstanceContainer {
   const instanceContainer: InstanceContainer = {
     instance: instanceFunc,
@@ -127,6 +131,7 @@ function initPropertyObject(
 
 export const defaultContainer = {
   get: getInstance,
+  clear,
   addAnnotation,
   addProperty,
   addInstanceContainer,

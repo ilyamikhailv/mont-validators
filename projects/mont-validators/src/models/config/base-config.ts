@@ -1,9 +1,15 @@
 import type { AbstractControl } from '@angular/forms';
 
+/**
+ * Base configuration for validators supporting conditional validation.
+ */
 export type BaseConfig = {
+  /** Custom error message. Use {{0}}, {{1}} for value placeholders */
   message?: string;
+  /** When false, validator is skipped */
   conditionalExpression?: (control: AbstractControl) => boolean;
   /** Field names to watch for revalidation when conditionalExpression is used */
   conditionalExpressionFields?: string[];
+  /** Key for i18n message lookup */
   messageKey?: string;
 };

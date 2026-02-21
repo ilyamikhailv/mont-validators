@@ -1,13 +1,19 @@
+import { DestroyRef } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormGroup } from '@angular/forms';
-import type { AbstractControl, FormArray, ValidatorFn } from '@angular/forms';
+import type { AbstractControl, ValidatorFn } from '@angular/forms';
 
 /**
  * When the specified controls change, triggers revalidation of the current control.
  * Used for cross-field validation (e.g. greaterThan, lessThanEqualTo, compare).
  * Sets up valueChanges subscriptions on the dependent controls.
+ *
+ * @param conditionalValidationProps - Field paths to watch for changes
+ * @param destroyRef - Optional DestroyRef for automatic subscription cleanup when form context is destroyed
  */
 export function conditionalChangeValidator(
-  conditionalValidationProps: string[]
+  conditionalValidationProps: string[],
+  destroyRef?: DestroyRef
 ): ValidatorFn {
   let subscribed = false;
   return (control: AbstractControl) => {
@@ -19,9 +25,18 @@ export function conditionalChangeValidator(
       conditionalValidationProps.forEach((propPath) => {
         const targetControl = getControlByPath(rootFormGroup, parentFormGroup, propPath);
         if (targetControl) {
-          targetControl.valueChanges.subscribe(() => {
-            setTimeout(() => control.updateValueAndValidity({ emitEvent: false }), 0);
-          });
+          const valueChanges$ = targetControl.valueChanges;
+          if (destroyRef) {
+            valueChanges$
+              .pipe(takeUntilDestroyed(destroyRef))
+              .subscribe(() => {
+                setTimeout(() => control.updateValueAndValidity({ emitEvent: false }), 0);
+              });
+          } else {
+            valueChanges$.subscribe(() => {
+              setTimeout(() => control.updateValueAndValidity({ emitEvent: false }), 0);
+            });
+          }
         }
       });
     }
@@ -36,7 +51,10 @@ function getRootFormGroup(control: AbstractControl): FormGroup {
   if (control instanceof FormGroup) {
     return control;
   }
-  throw new Error('Root control must be a FormGroup');
+  throw new Error(
+    'conditionalChangeValidator requires controls to be inside a FormGroup. ' +
+      'Ensure the control is part of a FormGroup hierarchy.'
+  );
 }
 
 function getControlByPath(

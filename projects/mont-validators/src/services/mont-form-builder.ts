@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { DestroyRef, Injectable } from '@angular/core';
 import {
   FormGroup,
   FormArray,
@@ -20,10 +20,34 @@ import {
   getConstructor,
 } from '../util/type-guards';
 
+export interface MontFormBuilderOptions {
+  /** DestroyRef for automatic cleanup of cross-field validation subscriptions */
+  destroyRef?: DestroyRef;
+}
+
+/**
+ * Builds FormGroup from a class instance with validation decorators.
+ * Use with @prop, @required, @email, etc. decorators.
+ *
+ * @example
+ * ```ts
+ * class UserForm {
+ *   @prop() @required() @email() email = '';
+ *   @prop() @required() @minLength(8) password = '';
+ * }
+ * const form = this.formBuilder.group(new UserForm());
+ * ```
+ */
 @Injectable({ providedIn: 'root' })
 export class MontFormBuilder {
 
-  group<T extends object>(model: T): FormGroup {
+  /**
+   * Creates a FormGroup from a decorated class instance.
+   * @param model - Class instance with @prop and validator decorators
+   * @param options - Optional config, e.g. destroyRef for subscription cleanup
+   * @returns FormGroup with validators applied
+   */
+  group<T extends object>(model: T, options?: MontFormBuilderOptions): FormGroup {
     if (typeof model === 'function') {
       throw new Error(
         'MontFormBuilder.group() expects a class instance, not a constructor. Use: fb.group(new MyClass())'
@@ -36,19 +60,20 @@ export class MontFormBuilder {
         `No metadata found for ${modelConstructor?.name ?? 'model'}. Ensure decorators are applied.`
       );
     }
-    return this.createFormGroup(instance, toRecord(model));
+    return this.createFormGroup(instance, toRecord(model), options?.destroyRef);
   }
 
   private createFormGroup(
     instanceContainer: InstanceContainer,
-    entityObject: Record<string, unknown>
+    entityObject: Record<string, unknown>,
+    destroyRef?: DestroyRef
   ): FormGroup {
     const group: Record<string, AbstractControl> = {};
 
     for (const property of instanceContainer.properties) {
       if (property.ignore?.(entityObject)) continue;
 
-      const validators = this.getValidatorsForProperty(property, instanceContainer);
+      const validators = this.getValidatorsForProperty(property, instanceContainer, destroyRef);
 
       switch (property.propertyType) {
         case PROPERTY:
@@ -64,7 +89,7 @@ export class MontFormBuilder {
           if (entity) {
             const nestedInstance = defaultContainer.get(entity);
             if (nestedInstance) {
-              group[property.name] = this.createFormGroup(nestedInstance, objValue);
+              group[property.name] = this.createFormGroup(nestedInstance, objValue, destroyRef);
             } else {
               group[property.name] = new FormControl(objValue, validators);
             }
@@ -80,7 +105,7 @@ export class MontFormBuilder {
             if (arrEntity) {
               const nestedInstance = defaultContainer.get(arrEntity);
               if (nestedInstance) {
-                return this.createFormGroup(nestedInstance, item);
+                return this.createFormGroup(nestedInstance, item, destroyRef);
               }
             }
             return new FormControl(item, validators);
@@ -95,13 +120,14 @@ export class MontFormBuilder {
 
   private getValidatorsForProperty(
     property: PropertyInfo,
-    instanceContainer: InstanceContainer
+    instanceContainer: InstanceContainer,
+    destroyRef?: DestroyRef
   ): ValidatorFn[] {
     const validators: ValidatorFn[] = [];
 
     const columns = this.getColumnsForProperty(property.name, instanceContainer);
     if (columns.length > 0) {
-      validators.push(conditionalChangeValidator(columns));
+      validators.push(conditionalChangeValidator(columns, destroyRef));
     }
 
     const propertyValidators = instanceContainer.propertyAnnotations.filter(

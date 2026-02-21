@@ -11,5 +11,17 @@ export default defineConfig({
     environment: 'jsdom',
     include: ['src/**/*.spec.ts'],
     reporters: ['default'],
+    coverage: {
+      provider: 'v8',
+      reportsDirectory: '../../coverage/mont-validators',
+      reporter: ['text', 'html', 'lcov'],
+      include: ['src/**/*.ts'],
+      exclude: [
+        'src/**/*.spec.ts',
+        'src/test-setup.ts',
+        'src/**/index.ts',
+        'src/public-api.ts',
+      ],
+    },
   },
 });

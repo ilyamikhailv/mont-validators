@@ -129,6 +129,67 @@ ngOnInit() {
 - `url`, `email`, `password`
 - `compare`, `choice`, `oneOf`
 
+## Конфигурации
+
+### PasswordConfig
+
+```typescript
+MontValidators.password({
+  validation: {
+    digit: true,
+    lowerCase: true,
+    upperCase: true,
+    minLength: 8,
+    maxLength: 32,
+  },
+  message: 'Пароль должен содержать цифры, буквы разного регистра и быть 8–32 символов',
+});
+```
+
+### ChoiceConfig
+
+```typescript
+MontValidators.choice({
+  minLength: 1,
+  maxLength: 5,
+  message: 'Выберите от 1 до 5 элементов',
+});
+```
+
+### CompareConfig / FieldConfig
+
+```typescript
+MontValidators.compare({ fieldName: 'password' });
+MontValidators.greaterThan({ fieldName: 'min', message: 'Должно быть больше {{0}}' });
+MontValidators.lessThanEqualTo({ fieldName: 'max' });
+```
+
+## Кастомизация сообщений
+
+Все валидаторы поддерживают `message` для кастомного текста ошибки. Плейсхолдеры `{{0}}`, `{{1}}` заменяются на значения из `refValues`:
+
+```typescript
+MontValidators.minNumber({ value: 18, message: 'Возраст должен быть не менее {{0}} лет' });
+MontValidators.compare({ fieldName: 'password', message: 'Пароли не совпадают' });
+```
+
+## Очистка подписок (DestroyRef)
+
+При использовании `MontFormBuilder.group()` с перекрёстной валидацией (compare, greaterThan и т.п.) подписки очищаются автоматически, если передать `destroyRef`:
+
+```typescript
+import { inject, DestroyRef } from '@angular/core';
+import { MontFormBuilder } from '@mont/validators';
+
+constructor(private formBuilder: MontFormBuilder) {}
+private destroyRef = inject(DestroyRef);
+
+ngOnInit() {
+  const user = new UserForm();
+  this.form = this.formBuilder.group(user, { destroyRef: this.destroyRef });
+}
+```
+
 ## Лицензия
 
 MIT
