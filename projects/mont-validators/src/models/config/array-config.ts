@@ -1,9 +1,9 @@
-import type { BaseConfigFn } from './base-config-fn';
+import type { BaseConfig } from './base-config';
 
 /**
  * Config for oneOf validator. Value must be in the allowed list.
  */
-export type ArrayConfig = BaseConfigFn & {
+export type ArrayConfig = BaseConfig & {
   /** Allowed values */
   matchValues?: unknown[];
 };

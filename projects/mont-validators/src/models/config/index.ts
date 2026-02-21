@@ -1,5 +1,4 @@
 export * from './base-config';
-export * from './base-config-fn';
 export * from './number-config';
 export * from './field-config';
 export * from './compare-config';

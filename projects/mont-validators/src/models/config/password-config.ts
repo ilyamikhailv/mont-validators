@@ -1,4 +1,4 @@
-import type { BaseConfigFn } from './base-config-fn';
+import type { BaseConfig } from './base-config';
 
 /**
  * Password strength rules. Each true/number enables that rule.
@@ -17,6 +17,6 @@ export type PasswordValidation = {
 /**
  * Config for password validator.
  */
-export type PasswordConfig = BaseConfigFn & {
+export type PasswordConfig = BaseConfig & {
   validation?: PasswordValidation;
 };
